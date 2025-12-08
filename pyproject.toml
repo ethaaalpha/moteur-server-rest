@@ -30,3 +30,9 @@ name = "testpypi"
 url = "https://test.pypi.org/simple/"
 publish-url = "https://test.pypi.org/legacy/"
 explicit = true
+
+[[tool.uv.index]]
+name = "nexus-snapshots"
+url = "https://vip.creatis.insa-lyon.fr:9007/nexus/repository/pypi-snapshot/simple/"
+publish-url = "https://vip.creatis.insa-lyon.fr:9007/nexus/repository/pypi-snapshot/"
+explicit = true
