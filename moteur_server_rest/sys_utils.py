@@ -1,6 +1,9 @@
+import logging
 import subprocess
 from moteur_server_rest.config import get_env_variable
 from moteur_server_rest.workflow_manager import get_number_running_workflows
+
+logger = logging.getLogger(__name__)
 
 def get_max_ram() -> int:
     grep = subprocess.run(
@@ -22,7 +25,11 @@ def get_allowed_ram() -> int:
 def is_enough_ram() -> bool:
     ram_per_worflow = int(get_env_variable("RAM_WORKFLOW", 256, required=True))
 
-    used = get_number_running_workflows() * ram_per_worflow
+    running = get_number_running_workflows()
+    used = running * ram_per_worflow
     allowed = get_allowed_ram()
+    result = used + ram_per_worflow < allowed
 
-    return used + ram_per_worflow < allowed
+    if not result:
+        logger.warning(f"RAM limit reached: {used}/{allowed}mb ({running} workflows)")
+    return result

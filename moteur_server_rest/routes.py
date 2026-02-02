@@ -4,7 +4,7 @@ import random
 import os
 from flask import Flask, request, jsonify
 from moteur_server_rest.file_utils import create_directory, write_file
-from moteur_server_rest.sys_utils import get_allowed_ram, is_enough_ram
+from moteur_server_rest.sys_utils import is_enough_ram
 from moteur_server_rest.workflow_manager import find_process_pids, launch_workflow, kill_workflow, process_settings
 from moteur_server_rest.config import get_env_variable
 from moteur_server_rest.config import get_workflow_filename
@@ -17,7 +17,7 @@ app = Flask(__name__)
 @auth.login_required
 def handle_submit():
     if not is_enough_ram():
-        logger.warning(f"Not enough ram to launch another workflow. (max: {get_allowed_ram()}M)")
+        logger.warning("Not enough ram to launch workflow!")
         return jsonify({"error": "Not enough ram to launch workflow!"}), 503
     document_root = get_env_variable("WORKFLOWS_ROOT", required=True)
 
