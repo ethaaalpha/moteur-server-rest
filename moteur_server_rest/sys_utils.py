@@ -1,6 +1,6 @@
 import logging
 import subprocess
-from moteur_server_rest.config import get_env_variable
+from moteur_server_rest.config import get_env_variable, get_ram_per_workflow
 from moteur_server_rest.workflow_manager import get_number_running_workflows
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def get_allowed_ram() -> int:
     return total_ram * (allowed_percentage / 100)
 
 def is_enough_ram() -> bool:
-    ram_per_worflow = int(get_env_variable("RAM_WORKFLOW", 256, required=True))
+    ram_per_worflow = get_ram_per_workflow()
 
     running = get_number_running_workflows()
     used = running * ram_per_worflow

@@ -6,7 +6,7 @@ import subprocess
 import shlex
 import threading
 from moteur_server_rest.jvm_utils import load_classpath
-from moteur_server_rest.config import get_env_variable
+from moteur_server_rest.config import get_env_variable, get_ram_per_workflow
 from moteur_server_rest.config import get_workflow_filename
 
 logger = logging.getLogger(__name__)
@@ -57,7 +57,7 @@ def launch_workflow(base_path: str, proxy_file: str = None) -> int:
     moteur_home     = get_env_variable('MOTEUR_HOME',     required=True)
     conf_location   = get_env_variable('CONF_LOCATION',   required=True)
     moteur_main_cls = get_env_variable('MOTEUR_MAIN_CLASS', required=True)
-    ram = get_env_variable('RAM_WORKFLOW', 256, required=False)
+    ram = get_ram_per_workflow()
 
     wf_file   = os.path.join(base_path, get_workflow_filename())
     input_file  = os.path.join(base_path, 'inputs.json')
